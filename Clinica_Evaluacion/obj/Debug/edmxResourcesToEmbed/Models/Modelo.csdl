@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Clinica_ActividadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="enfermera">
+    <Key>
+      <PropertyRef Name="id_enfermera" />
+    </Key>
+    <Property Name="id_enfermera" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Edad" Type="Int32" />
+    <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="id_medico" Type="Int32" />
+    <NavigationProperty Name="Medico" Relationship="Self.FK_enfermera_Medico" FromRole="enfermera" ToRole="Medico" />
+  </EntityType>
+  <EntityType Name="Medico">
+    <Key>
+      <PropertyRef Name="id_medico" />
+    </Key>
+    <Property Name="id_medico" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Especialidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Edad" Type="Int32" />
+    <NavigationProperty Name="enfermera" Relationship="Self.FK_enfermera_Medico" FromRole="Medico" ToRole="enfermera" />
+    <NavigationProperty Name="Paciente" Relationship="Self.FK_Paciente_Medico" FromRole="Medico" ToRole="Paciente" />
+  </EntityType>
+  <EntityType Name="Paciente">
+    <Key>
+      <PropertyRef Name="id_paciente" />
+    </Key>
+    <Property Name="id_paciente" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Edad" Type="Int32" />
+    <Property Name="id_med" Type="Int32" />
+    <NavigationProperty Name="Medico" Relationship="Self.FK_Paciente_Medico" FromRole="Paciente" ToRole="Medico" />
+  </EntityType>
+  <Association Name="FK_enfermera_Medico">
+    <End Role="Medico" Type="Self.Medico" Multiplicity="0..1" />
+    <End Role="enfermera" Type="Self.enfermera" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medico">
+        <PropertyRef Name="id_medico" />
+      </Principal>
+      <Dependent Role="enfermera">
+        <PropertyRef Name="id_medico" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Paciente_Medico">
+    <End Role="Medico" Type="Self.Medico" Multiplicity="0..1" />
+    <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medico">
+        <PropertyRef Name="id_medico" />
+      </Principal>
+      <Dependent Role="Paciente">
+        <PropertyRef Name="id_med" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Clinica_ActividadEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="enfermera" EntityType="Self.enfermera" />
+    <EntitySet Name="Medico" EntityType="Self.Medico" />
+    <EntitySet Name="Paciente" EntityType="Self.Paciente" />
+    <AssociationSet Name="FK_enfermera_Medico" Association="Self.FK_enfermera_Medico">
+      <End Role="Medico" EntitySet="Medico" />
+      <End Role="enfermera" EntitySet="enfermera" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Paciente_Medico" Association="Self.FK_Paciente_Medico">
+      <End Role="Medico" EntitySet="Medico" />
+      <End Role="Paciente" EntitySet="Paciente" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

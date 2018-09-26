@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Clinica_Evaluacion.Models.Paciente>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Registro Clinico</h2>
+
+<p>
+    @Html.ActionLink("Agregar Registro de Paciente", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Apellido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edad)
+        </th>
+        <th>
+           Medico Asignado
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Apellido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Medico.Nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.id_paciente }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.id_paciente }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.id_paciente })
+        </td>
+    </tr>
+}
+
+</table>
